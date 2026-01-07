@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Return Successful{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-5 text-center">
+            <div class="fs-1 text-success mb-3"><i class="fas fa-check-circle"></i></div>
+            <h2 class="mb-3">Book Returned Successfully!</h2>
+            <p class="lead">
+                <strong>{{ transaction.book.title }}</strong> returned by <strong>{{ transaction.user.username
+                    }}</strong>.
+            </p>
+
+            {% if fine > 0 %}
+            <div class="alert alert-danger mt-3">
+                <h4 class="alert-heading">Fine Due: ${{ fine }}</h4>
+                <p>The book was returned after the due date.</p>
+            </div>
+            {% else %}
+            <div class="alert alert-success mt-3">
+                No fine due. Thank you!
+            </div>
+            {% endif %}
+
+            <a href="{% url 'return_book' %}" class="btn btn-primary mt-3">Execute Another Return</a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary mt-3">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

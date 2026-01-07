@@ -1,0 +1,7 @@
+django==4.2.27
+pillow
+pandas
+openpyxl
+reportlab
+gunicorn
+whitenoise

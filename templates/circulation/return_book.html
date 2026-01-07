@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Return Book{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">Active Issues (Books to Return)</h2>
+        <div class="card p-4">
+            {% if transactions %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>User</th>
+                        <th>Book</th>
+                        <th>Due Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transactions %}
+                    <tr>
+                        <td>#{{ t.id }}</td>
+                        <td>{{ t.user.username }} ({{ t.user.enrollment_no }})</td>
+                        <td>{{ t.book.title }}</td>
+                        <td>
+                            {{ t.due_date|date:"M d, Y" }}
+                            {% if t.due_date < now %} <span class="badge bg-danger">Overdue</span>{% endif %}
+                        </td>
+                        <td>
+                            <form method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="transaction_id" value="{{ t.id }}">
+                                <button type="submit" class="btn btn-sm btn-success">Return</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No books currently issued.</p>
+            {% endif %}
+
+            <a href="{% url 'dashboard' %}" class="btn btn-link mt-2">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
